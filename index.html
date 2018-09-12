@@ -1,49 +1,390 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <title>reveal.js</title>
+      <link rel="stylesheet" href="css/reveal.css">
+      <link rel="stylesheet" href="css/theme/black.css">
+      <!-- Theme used for syntax highlighting of code -->
+      <link rel="stylesheet" href="lib/css/zenburn.css">
+      <!-- Printing and PDF exports -->
+      <script>
+         var link = document.createElement('link');
+         link.rel = 'stylesheet';
+         link.type = 'text/css';
+         link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+         document.getElementsByTagName('head')[0].appendChild(link);
+      </script>
+   </head>
+   <body>
+      <div class="reveal">
+         <div class="slides">
+            <section data-background="img/rx-logo.png" data-background-size="600px">
+              <div>&nbsp;</div>
+              <div style="font-size: 2em">RxJS</div>
+              <div style="font-size: 16px">- Shobhit Gupta</div>
+            </section>
+            <section>
+               <h2>Async is hard</h2>
+               <img src="img/giphy-async-is-hard.gif" />
+            </section>
 
-		<title>reveal.js</title>
+            <section>Both Promises and Observables<br>
+              are built to solve problems around async<br>
+              (to avoid "callback hell")
+           </section>
+            <section class="present" style="top: 145px; display: block;">
+               <h2>Promises</h2>
+               <ul>
+                  <li class="fragment">are 'a promise' for a future single value</li>
+                  <li class="fragment">Inherently not lazy. By the time you have promise, it's on its way to be resolved. </li>
+                  <li class="fragment">Uncancellable. After creation, your promise will resolve or reject, and only once.</li>
+               </ul>
+            </section>
+            <section class="present" style="top: 145px; display: block;">
+               <h2>Observables</h2>
+               <ul>
+                  <li class="fragment">are a Stream of data</li>
+                  <li class="fragment">of any number of things</li>
+                  <li class="fragment">over an amount of time.</li>
+                  <li class="fragment">Lazy. Observables will not generate/process values unless they are subscribed to.</li>
+                  <li class="fragment">Can be "unsubscribed" from. This means the underlying producer can be told to stop and
+                     even
+                     tear down.
+                  </li>
+               </ul>
+            </section>
+            <section class="present" style="top: 145px; display: block;">
+               <h2>Types of async in modern web applications</h2>
+               <ul>
+                  <li class="fragment">DOM events</li>
+                  <li class="fragment">Animations</li>
+                  <li class="fragment">AJAX</li>
+                  <li class="fragment">WebSockets / SSE</li>
+               </ul>
+            </section>
+            <section class="present" style="top: 145px; display: block;">
+               <h2>When does it makes sense to use Promises?</h2>
+               <ul>
+                  <li>DOM events (0-N values) <span class="fragment">✕</span></li>
+                  <li>Animations (Cancellable) <span class="fragment">✕</span></li>
+                  <li>WebSockets / SSE (0-N values) <span class="fragment">✕</span></li>
+                  <li>AJAX (1 value) <span class="fragment">✔</span></li>
+               </ul>
+            </section>
+            <section class="present" style="top: 145px; display: block;">
+               <h2>...except when it doesn't</h2>
+               <ul>
+                  <li class="fragment">In SPAs, when the view changes, the next view probably doesn't care about the previous AJAX call
+                     that might be in-route
+                  </li>
+                  <li class="fragment">We know that XHRs can be aborted</li>
+                  <li class="fragment">But promise-based AJAX implementations cannot be aborted, because Promises aren't
+                     cancellable (well, not in a simple way).
+                  </li>
+               </ul>
+            </section>
+            <section  class="present" style="top: 145px; display: block;">
+              <img src="img/standards.png" style="width: 800px;"/>
+              <h2 class="fragment" style="text-transform: lowercase;">...observables are not a competing standard.</h2>
+            </section>
+            <section data-background="img/general-theory-of-reactivity-original.jpg" data-transition="none"></section>
+            <section data-background="img/general-theory-of-reactivity.jpg" data-transition="none"></section>
+            <section class="present" style="top: 145px; display: block;" data-transition="none-in">
+               <h2>From Promises to Observables</h2>
+               <pre>
+                <code data-trim data-noescape>
+                  promise.then(
+                    successFn,
+                    errorFn
+                    );
+                </code>
+              </pre>
+            </section>
+            <section class="present" style="top: 145px; display: block;" data-transition="none">
+               <h2>From Promises to Observables</h2>
+               <pre>
+                  <code data-trim data-noescape>
+                    observable.then(
+                      successFn,
+                      errorFn
+                      );
+                  </code>
+                </pre>
+            </section>
+            <section class="present" style="top: 145px; display: block;" data-transition="none">
+               <h2>From Promises to Observables</h2>
+               <pre>
+                  <code data-trim data-noescape>
+                    observable.subscribe(
+                      successFn,
+                      errorFn
+                      );
+                  </code>
+                </pre>
+            </section>
+            <section class="present" style="top: 145px; display: block;" data-transition="none">
+               <h2>From Promises to Observables</h2>
+               <pre>
+                  <code data-trim data-noescape>
+                    observable.subscribe(
+                      nextFn,
+                      errorFn
+                      );
+                  </code>
+                </pre>
+            </section>
+            <section class="present" style="top: 145px; display: block;" data-transition="none">
+               <h2>From Promises to Observables</h2>
+               <pre>
+                <code data-trim data-noescape>
+                  observable.subscribe(
+                    nextFn,
+                    errorFn,
+                    completeFn
+                    );
+                </code>
+              </pre>
+            </section>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+            <section class="present" style="top: 145px; display: block;">
+                <h2>But don't forget to unsubscribe</h2>
+                <img src="img/neuman.jpeg"/>
+            </section>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+            <section class="present" style="top: 145px; display: block;" data-transition="none">
+              <h2>A subscription gets unsubscribed:</h2>
+               <ul>
+                  <li class="fragment">When you call the <code>.unsubscribe()</code> function on the subscription object.</li>
+                  <li class="fragment">When the Observable comes to a complete state.</li>
+                  <li class="fragment">or when it comes to an error state.</li>
+                  <li class="fragment">Note: Observable can be forced to complete prematurely by other operators. And that is very useful.</li>
+               </ul>
+            </section>
+ 
+ 
+            <section class="present" style="top: 145px; display: block;">
+               <h2>RxJS Resources</h2>
+               <a href="https://rxjs-dev.firebaseapp.com/">Official RxJS docs</a>
+               <br/>
+               <a href="http://reactivex.io/documentation/">Old official docs</a>
+               <br/>
+               <a href="https://www.learnrxjs.io/">Learn RxJS docs</a>
+               <br/>
+               <a href="https://chrisnoring.gitbooks.io/rxjs-5-ultimate/">Free Ebook by Chris Noring</a>
+               <br/>
+               <a href="http://rxmarbles.com/">RxJS Marbles</a>
+               <br/>
+               <a href="https://rxviz.com/">Animated playground for RxJS</a>
+               <br/>
+               <a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754">Nice intro to RxJS by Andre Staltz</a>
+            </section>
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+            <section class="present" style="top: 145px; display: block;">
+               <h2>Observable Stream</h2>
+               <img src="img/legend.png"/>
+            </section>
+
+            <section class="present" style="top: 145px; display: block;">
+                <h2>What does operator and observer usages looks like?</h2>
+                <img src="img/filter_map.png"/>
+            </section>
+
+             <section class="present" style="top: 145px; display: block;" data-background="img/operators.png" data-background-size="1400px">
+            </section>
+            <section>
+                <h4>Operators documentation</h4>
+                <iframe class="stretch" data-src="https://www.learnrxjs.io/operators/"></iframe>
+            </section>
+
+            <section class="present" style="top: 145px; display: block;">
+               <h2>Creation operators in RxJS</h2>
+               <pre>
+                <code data-trim data-noescape>
+                  Observable.of(valu1, value2, value3, ...)
+                  Observable.from(promise/iterable/observable)
+                  Observable.range(1, 10)
+                  Observable.fromEvent(target, eventName);
+                  Observable.interval(1000)
+                  Observable.timer(0, 1000)
+                  Observable.create((observer) => {...})
+                  Observable.webSocket('ws://echo.websocket.com')
+                  Observable.ajax.getJSON('https://api.exmaple.com')
+                  Observable.ajax.get / put / post / patch / delete   (url, [options])
+                  ...many more
+                </code>
+              </pre>
+            </section>
+            <section>
+                <h4>Creation Operators</h4>
+               <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-create-helpers?embed=1&file=index.ts"></iframe>
+            </section>
+
+            <section>
+                <h2>Some common Operators</h2>
+            </section>
+            <section>
+                <h4>map</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#map"></iframe>
+            </section>
+            <section>
+                <h4>filter</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#filter"></iframe>
+            </section>
+            <section>
+                <h4>take</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#take"></iframe>
+                <div>...operators like take (first, last, takeUntil, takeWhile, etc) helps with auto-unsubscription.</div>
+            </section>
+            <section>
+                <h4>first</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#first"></iframe>
+            </section>
+            <section>
+                <h4>last</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#last"></iframe>
+            </section>
+
+            <section>
+                <h4>merge</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#merge"></iframe>
+            </section>
+            <section>
+                <h4>concat</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#concat"></iframe>
+            </section>
+            <section>
+                <h4>zip</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#zip"></iframe>
+            </section>
+            <section>
+                <h4>distinctUntilChanged</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#distinctUntilChanged"></iframe>
+            </section>
+            <section>
+                <h4>Higher Order Observables</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-nap-mergemap-switchmap?embed=1&file=index.ts"></iframe>
+            </section>
+            <section>
+                <h4>Multiple Subscribers</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-multiple-subscribers?embed=1&file=index.ts"></iframe>
+            </section>
+            <section>
+                <h4>Merge two Observables</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/typescript-merge-two-observables?embed=1&file=index.ts"></iframe>
+            </section>
+            <section>
+                <h4>AJAX on Timer</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-dog-timer?embed=1&file=index.ts"></iframe>
+            </section>
+
+            <section>
+                <h4>Button controlled AJAX</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-button-controlled-ajax?embed=1&file=index.ts"></iframe>
+            </section>
+            <section>
+                <h4>Typeahead</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-typeahead?embed=1&file=index.ts"></iframe>
+            </section>
+            
+            <section>
+                <h4>Circle Drag</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-circle-drag?embed=1&file=index.ts"></iframe>
+            </section>
+            
+            <section>
+                <h4>Circle Drag</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-drag-drop-div?file=index.ts"></iframe>
+            </section>
+            
+            <section>
+                <h2>Real World code walk-through</h2>
+            </section>
+            
+            <section>
+                <h2>Have fun and be reactive</h2>
+                <h2>-Shobhit</h2>
+            </section>
+            
+            <!-- <section>
+               <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-observable-create-1?embed=1&file=index.ts"></iframe>
+            </section> -->
+            <!-- <section>
+               <iframe class="stretch" data-src="https://stackblitz.com/edit/typescript-xmycam?embed=1&file=index.ts"></iframe>
+            </section>
+            <section>Jump into code</section>
+            <section>
+               <h2>Purity</h2>
+               <div>What makes RxJS powerful is its ability to produce values using pure functions. </div>
+               <pre>
+                  <code data-trim data-noescape>
+                    var count = 0;
+                    var button = document.querySelector('button');
+                    button.addEventListener('click', () => console.log(`Clicked ${++count} times`));
+                  </code>
+                  <code data-trim data-noescape>
+                      var button = document.querySelector('button');
+                      Rx.Observable.fromEvent(button, 'click')
+                        .scan(count => count + 1, 0)
+                        .subscribe(count => console.log(`Clicked ${count} times`));
+                  </code>
+                </pre>
+            </section>
+            <section>
+               <pre><code data-trim data-noescape>
+                  Rx.Observable.range(0, 10)
+                  .map(num => num + 1)
+                  .filter(num => (num % 2)===0 )
+                  .subscribe(num => console.log(num))
+                </code></pre>
+            </section>
+            <section>
+               <pre><code data-trim data-noescape>
+                  Rx.Observable.range(0, 10)
+                  .map(num => num + 1)
+                  .filter(num => (num % 2)===0 )
+                  .subscribe(num => console.log(num))
+                </code></pre>
+            </section>
+            <section>
+               <pre><code data-trim data-noescape>
+                  Rx.Observable.range(0, 10)
+                  .map(num => num + 1)
+                  .filter(num => (num % 2)===0 )
+                  .subscribe(num => console.log(num))
+                </code></pre>
+            </section> -->
+         </div>
+      </div>
+      <script src="lib/js/head.min.js"></script>
+      <script src="js/reveal.js"></script>
+      <script>
+         // More info about config & dependencies:
+         // - https://github.com/hakimel/reveal.js#configuration
+         // - https://github.com/hakimel/reveal.js#dependencies
+         Reveal.initialize({
+           dependencies: [{
+               src: 'plugin/markdown/marked.js'
+             },
+             {
+               src: 'plugin/markdown/markdown.js'
+             },
+             {
+               src: 'plugin/notes/notes.js',
+               async: true
+             },
+             {
+               src: 'plugin/highlight/highlight.js',
+               async: true,
+               callback: function () {
+                 hljs.initHighlightingOnLoad();
+               }
+             }
+           ]
+         });
+      </script>
+   </body>
 </html>
