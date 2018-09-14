@@ -21,10 +21,10 @@
    <body>
       <div class="reveal">
          <div class="slides">
-            <section data-background="img/rx-logo.png" data-background-size="600px">
+            <section data-background="img/rx-logo.png" data-background-size="900px">
               <div>&nbsp;</div>
-              <div style="font-size: 2em">RxJS</div>
-              <div style="font-size: 16px">- Shobhit Gupta</div>
+              <div style="font-size: 1em">RxJS</div>
+              <div style="font-size: 14px">- Shobhit Gupta</div>
             </section>
             <section>
                <h2>Async is hard</h2>
@@ -158,8 +158,8 @@
               <h2>A subscription gets unsubscribed:</h2>
                <ul>
                   <li class="fragment">When you call the <code>.unsubscribe()</code> function on the subscription object.</li>
-                  <li class="fragment">When the Observable comes to a complete state.</li>
-                  <li class="fragment">or when it comes to an error state.</li>
+                  <li class="fragment">When the Observable comes to a <code>complete</code> state.</li>
+                  <li class="fragment">or when it comes to an <code>error</code> state.</li>
                   <li class="fragment">Note: Observable can be forced to complete prematurely by other operators. And that is very useful.</li>
                </ul>
             </section>
@@ -248,15 +248,6 @@
                 <h4>last</h4>
                 <iframe class="stretch" data-src="http://rxmarbles.com/#last"></iframe>
             </section>
-
-            <section>
-                <h4>merge</h4>
-                <iframe class="stretch" data-src="http://rxmarbles.com/#merge"></iframe>
-            </section>
-            <section>
-                <h4>concat</h4>
-                <iframe class="stretch" data-src="http://rxmarbles.com/#concat"></iframe>
-            </section>
             <section>
                 <h4>zip</h4>
                 <iframe class="stretch" data-src="http://rxmarbles.com/#zip"></iframe>
@@ -266,8 +257,24 @@
                 <iframe class="stretch" data-src="http://rxmarbles.com/#distinctUntilChanged"></iframe>
             </section>
             <section>
+                <h4>merge</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#merge"></iframe>
+            </section>
+            <section>
+                <h4>concat</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#concat"></iframe>
+            </section>
+            <section>
                 <h4>Higher Order Observables</h4>
                 <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-nap-mergemap-switchmap?embed=1&file=index.ts"></iframe>
+            </section>
+            <section>
+                <h4>merge map</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#mergeMap"></iframe>
+            </section>
+            <section>
+                <h4>switch map</h4>
+                <iframe class="stretch" data-src="http://rxmarbles.com/#switchMap"></iframe>
             </section>
             <section>
                 <h4>Multiple Subscribers</h4>
@@ -292,14 +299,15 @@
             </section>
             
             <section>
+                <h4>Simple Drag Drop</h4>
+                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-drag-drop-div?file=index.ts"></iframe>
+            </section>
+
+            <section>
                 <h4>Circle Drag</h4>
                 <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-circle-drag?embed=1&file=index.ts"></iframe>
             </section>
-            
-            <section>
-                <h4>Circle Drag</h4>
-                <iframe class="stretch" data-src="https://stackblitz.com/edit/rxjs-drag-drop-div?file=index.ts"></iframe>
-            </section>
+          
             
             <section>
                 <h2>Real World code walk-through</h2>
